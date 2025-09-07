@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AR Cultural Heritage</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      background: #111; /* Dark background */
+      color: #fff;
+    }
+    h1 {
+      background: #333;
+      color: white;
+      padding: 15px;
+      margin: 0;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+      background-color: #0077ff;
+      color: white;
+    }
+    model-viewer {
+      width: 100%;
+      max-width: 400px;
+      height: 400px;
+      margin: 20px auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>AR-Based Cultural Heritage</h1>
+
+  <!-- Buttons -->
+  <div id="buttons">
+    <button data-model="taj_mahal.glb" data-name="Taj Mahal">Taj Mahal</button>
+    <button data-model="qutubminar.glb" data-name="Qutub Minar">Qutub Minar</button>
+    <button data-model="gateway_of_india.glb" data-name="Gateway of India">Gateway of India</button>
+    <button data-model="india_gate.glb" data-name="India Gate">India Gate</button>
+    <button data-model="charminar.glb" data-name="Charminar">Charminar</button>
+  </div>
+
+  <h2 id="model-title">Select a Heritage Site</h2>
+  <model-viewer id="model-viewer" auto-rotate camera-controls ar></model-viewer>
+
+  <!-- Register Service Worker -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js")
+        .then(reg => console.log("✅ Service Worker registered:", reg.scope))
+        .catch(err => console.error("❌ Service Worker registration failed:", err));
+    }
+
+    const buttons = document.querySelectorAll('#buttons button');
+    const viewer = document.getElementById('model-viewer');
+    const title = document.getElementById('model-title');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modelFile = "models/" + btn.getAttribute('data-model');
+        const modelName = btn.getAttribute('data-name');
+
+        title.textContent = modelName;
+        viewer.src = modelFile;
+      });
+    });
+  </script>
+</body>
+</html>

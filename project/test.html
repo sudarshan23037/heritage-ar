@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GLB Loader Test</title>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+<body>
+<script>
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// Basic lighting
+const light = new THREE.AmbientLight(0xffffff, 1);
+scene.add(light);
+
+// Loader test
+const loader = new THREE.GLTFLoader();
+loader.load('models/charminar.glb',
+    gltf => {
+        console.log("Model loaded!");
+        scene.add(gltf.scene);
+    },
+    undefined,
+    err => console.error("Error loading model:", err)
+);
+
+camera.position.z = 5;
+
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>
